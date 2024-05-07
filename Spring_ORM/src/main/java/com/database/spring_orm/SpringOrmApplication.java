@@ -44,48 +44,8 @@ public class SpringOrmApplication implements CommandLineRunner {
     @Transactional
     @Override
     public void run(String... args) throws Exception {
-//        Hw hw1 = new Hw();
-//        hw1.setRequestor("Danil");
-//        Hw hw2 = new Hw();
-//        hw2.setRequestor("Ivan");
-//        hwRepo.save(hw1);
-//        hwRepo.save(hw2);
-//
-//        Sw sw1 = new Sw();
-//        sw1.setControlAuthority("Hello");
-//        Sw sw2 = new Sw();
-//        sw2.setControlAuthority("Be Safe");
-//        swRepo.save(sw1);
-//        swRepo.save(sw2);
-//
-//        Box box1 = new Box();
-//        box1.setNumber(55);
-//        boxRepo.save(box1);
-//
-//        Lock lock1 = new Lock();
-//        lock1.setNumber(31);
-//        Lock lock2 = new Lock();
-//        lock2.setNumber(32);
-//        Lock lock3 = new Lock();
-//        lock3.setNumber(33);
-//        lockRepo.save(lock2);
-//        lockRepo.save(lock1);
-//        lockRepo.save(lock3);
-//
-//        Loto loto1 = new Loto();
-//        loto1.setBox(box1);
-//        box1.setLoto(loto1);
-//        loto1.setLocks(new ArrayList<>(Arrays.asList(lock1,lock2,lock3)));
-//        lock1.setLoto(loto1);
-//        lock2.setLoto(loto1);
-//        lock3.setLoto(loto1);
-//        loto1.setEquipment("pump");
-//        lotoRepo.save(loto1);
-//
-//        Ticket ticket1 = new Ticket();
-//        ticket1.setPermits(new ArrayList<>(Arrays.asList(hw1,hw2,sw1,sw2,loto1)));
-//        ticketRepo.save(ticket1);
 
+        buildLotoList();
 
         Ticket ticket = ticketRepo.findAll().get(0);
         System.out.println("ticket.getType() = " + ticket.getType());
@@ -102,6 +62,65 @@ public class SpringOrmApplication implements CommandLineRunner {
 
 
 
+
+    }
+
+    private void buildAll(){
+        Hw hw1 = new Hw();
+        hw1.setRequestor("Danil");
+        Hw hw2 = new Hw();
+        hw2.setRequestor("Ivan");
+        hwRepo.save(hw1);
+        hwRepo.save(hw2);
+
+        Sw sw1 = new Sw();
+        sw1.setControlAuthority("Hello");
+        Sw sw2 = new Sw();
+        sw2.setControlAuthority("Be Safe");
+        swRepo.save(sw1);
+        swRepo.save(sw2);
+
+        Box box1 = new Box();
+        box1.setNumber(55);
+        boxRepo.save(box1);
+
+        Lock lock1 = new Lock();
+        lock1.setNumber(31);
+        Lock lock2 = new Lock();
+        lock2.setNumber(32);
+        Lock lock3 = new Lock();
+        lock3.setNumber(33);
+        lockRepo.save(lock2);
+        lockRepo.save(lock1);
+        lockRepo.save(lock3);
+
+        Loto loto1 = new Loto();
+        loto1.setBox(box1);
+        box1.setLoto(loto1);
+        loto1.setLocks(new ArrayList<>(Arrays.asList(lock1,lock2,lock3)));
+        lock1.setLoto(loto1);
+        lock2.setLoto(loto1);
+        lock3.setLoto(loto1);
+        loto1.setEquipment("pump");
+        lotoRepo.save(loto1);
+
+        Ticket ticket1 = new Ticket();
+        ticket1.setPermits(new ArrayList<>(Arrays.asList(hw1,hw2,sw1,sw2,loto1)));
+        ticketRepo.save(ticket1);
+    }
+    private void buildLotoList(){
+        Loto loto1 = new Loto();
+        loto1.setRequestor("Andrew");
+        lotoRepo.save(loto1);
+        Loto loto2 = new Loto();
+        loto1.setRequestor("Danil");
+        lotoRepo.save(loto2);
+        Loto loto3 = new Loto();
+        loto1.setRequestor("Cory");
+        lotoRepo.save(loto3);
+        Loto loto4 = new Loto();
+        loto1.setRequestor("Ryan");
+        lotoRepo.save(loto4);
 
     }
 }

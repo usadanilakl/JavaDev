@@ -15,7 +15,7 @@ public interface BasePermitService<T,D> {
     T changeStatus(Long id, Status status);
     List<T> sortTable(String column);
     List<T> filterTable(Map<String,String> filters);
-    List<T> getLastFilter();
+    List<T> getLastFilteredList();
     List<T> clearFilters();
     void filterNew(T entity);
 }

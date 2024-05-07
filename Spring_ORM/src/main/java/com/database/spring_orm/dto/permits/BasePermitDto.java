@@ -26,7 +26,7 @@ public class BasePermitDto {
     private String createdBy;
 
     public BasePermit toEntity(){
-        return new BasePermit((this.workScope, this.system,this.equipment,this.requestor, this.controlAuthority, this.type, this.docNum, this.status, this.tickets,this.getCreatedBy());
+        return new BasePermit(this.workScope,this.system,this.equipment,this.requestor, this.controlAuthority, this.type, this.docNum, this.status, this.tickets);
     }
 
 }
