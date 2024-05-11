@@ -5,5 +5,5 @@ import com.database.spring_orm.entities.permits.tickets.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
-public interface TicketRepo extends JpaRepository<Ticket,Long> {
+public interface TicketRepo extends BaseTicketRepo {
 }

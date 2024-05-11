@@ -17,50 +17,50 @@ import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor
-public class BasePermitServiceImpl implements BasePermitService<BasePermit, BasePermitDto> {
-    private final BasePermitRepo repository;
+public class BasePermitServiceImpl <T extends BasePermit,D extends BasePermitDto<T>> implements BasePermitService<T, D> {
+    private final BasePermitRepo<T> repository;
     protected PermitNumbersService permitNumbersService;
-    private final FilterService<BasePermit> filterService;
+    private final FilterService<T> filterService;
 
     @Override
-    public List<BasePermit> getAll() {
+    public List<T> getAll() {
         return Util.toList(repository.findAll());
     }
 
     @Override
-    public List<BasePermit> getAllSorted(String column) {
+    public List<T> getAllSorted(String column) {
         return repository.findAll(Sort.by(column));
     }
 
     @Override
-    public BasePermit getById(Long id) {
+    public T getById(Long id) {
         return repository.findById(id).orElse(null);
     }
 
     @Override
-    public BasePermit save(BasePermit entity) {
+    public T save(T entity) {
         return repository.save(entity);
     }
 
     @Override
-    public BasePermit createNew(BasePermitDto dto) {
-        BasePermit permit = dto.toEntity();
+    public T createNew(D dto) {
+        T permit = dto.toEntity();
         permit.setDocNum(permitNumbersService.getNumber(permit.getType()));
         permit.setStatus(Status.INCATCIVE);
         return null;
     }
 
     @Override
-    public BasePermit changeStatus(Long id, Status status) {
-        BasePermit permit = getById(id);
+    public T changeStatus(Long id, Status status) {
+        T permit = getById(id);
         permit.setStatus(status);
         return permit;
     }
 
     @Override
-    public List<BasePermit> sortTable(String column) {
+    public List<T> sortTable(String column) {
         if(filterService.getPermits()==null) filterService.setPermits(getAll());
-        if(filterService.getLastSortingRequest().equals(column)){
+        if(filterService.getLastSortingRequest()!=null && filterService.getLastSortingRequest().equals(column)){
             if(filterService.getAscending()) filterService.setAscending(false);
             else filterService.setAscending(true);
         }
@@ -74,7 +74,7 @@ public class BasePermitServiceImpl implements BasePermitService<BasePermit, Base
     }
 
     @Override
-    public List<BasePermit> filterTable(Map<String, String> filters) {
+    public List<T> filterTable(Map<String, String> filters) {
         filterService.setPermits(getAll());
         filterService.setLastSetOfFileters(filters);
         for(Map.Entry<String,String> e : filters.entrySet()){
@@ -84,19 +84,19 @@ public class BasePermitServiceImpl implements BasePermitService<BasePermit, Base
     }
 
     @Override
-    public List<BasePermit> getLastFilteredList() {
+    public List<T> getLastFilteredList() {
         if(filterService.getPermits()==null) filterService.setPermits(getAll());
         return filterService.getPermits();
     }
 
     @Override
-    public List<BasePermit> clearFilters() {
+    public List<T> clearFilters() {
         filterService.setPermits(getAll());
         return filterService.getPermits();
     }
 
     @Override
-    public void filterNew(BasePermit entity) {
+    public void filterNew(T entity) {
         boolean contains = true;
         if(filterService.getLastSetOfFileters()!=null){
             for(Map.Entry<String,String> e : filterService.getLastSetOfFileters().entrySet()){
@@ -112,5 +112,9 @@ public class BasePermitServiceImpl implements BasePermitService<BasePermit, Base
             }
         }
         if(contains)filterService.addItem(entity);
+    }
+
+    public List<T> getTestList(){
+        return filterService.getPermits();
     }
 }

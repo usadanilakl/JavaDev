@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class BasePermitDto {
+public abstract class BasePermitDto <T extends BasePermit> {
     private String workScope;
     private String system;
     private String equipment;
@@ -25,8 +25,9 @@ public class BasePermitDto {
     private List<BaseTicket> tickets;
     private String createdBy;
 
-    public BasePermit toEntity(){
-        return new BasePermit(this.workScope,this.system,this.equipment,this.requestor, this.controlAuthority, this.type, this.docNum, this.status, this.tickets);
-    }
+    public abstract T toEntity();
+//    {
+//        return new BasePermit(this.workScope,this.system,this.equipment,this.requestor, this.controlAuthority, this.type, this.docNum, this.status, this.tickets);
+//    }
 
 }

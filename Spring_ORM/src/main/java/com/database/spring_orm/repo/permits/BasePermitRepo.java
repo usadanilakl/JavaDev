@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface BasePermitRepo extends CrudRepository<BasePermit,Long> {
-    List<BasePermit> findAll(Sort sortBy);
+public interface BasePermitRepo <T extends BasePermit> extends CrudRepository<T,Long> {
+    List<T> findAll(Sort sortBy);
 }

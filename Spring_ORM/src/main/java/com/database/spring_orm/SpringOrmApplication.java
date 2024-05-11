@@ -14,16 +14,16 @@ import com.database.spring_orm.repo.permits.loto_repo.LockRepo;
 import com.database.spring_orm.repo.permits.loto_repo.LotoRepo;
 import com.database.spring_orm.repo.permits.safe_work_repo.SwRepo;
 import com.database.spring_orm.repo.permits.ticket_repo.TicketRepo;
-import com.database.spring_orm.service.permits.TicketService;
+import com.database.spring_orm.service.permits.impl.TicketService;
+import com.database.spring_orm.service.permits.impl.LotoService;
+import com.database.spring_orm.util.Util;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @SpringBootApplication
 @AllArgsConstructor
@@ -35,6 +35,7 @@ public class SpringOrmApplication implements CommandLineRunner {
     private final BoxRepo boxRepo;
     private final TicketRepo ticketRepo;
     private final TicketService ticketService;
+    private final LotoService lotoService;
 
 
     public static void main(String[] args) {
@@ -45,9 +46,9 @@ public class SpringOrmApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        buildLotoList();
+        //buildLotoList();
 
-        Ticket ticket = ticketRepo.findAll().get(0);
+        Ticket ticket = Util.toList(ticketRepo.findAll()).get(0);
         System.out.println("ticket.getType() = " + ticket.getType());
         List<BasePermit> permits = ticket.getPermits();
         Loto loto = null;
@@ -60,7 +61,19 @@ public class SpringOrmApplication implements CommandLineRunner {
             System.out.println(loto.getLocks());
         }
 
+        List<Loto> list = lotoService.getAll();
+        System.out.println("========================================");
+        list.forEach(e-> System.out.println(e.getRequestor()));
 
+        System.out.println(lotoService.getTestList().size());
+
+        List<Loto> requestor = lotoService.sortTable("getRequestor");
+        System.out.println("========================================");
+        requestor.forEach(e-> System.out.println(e.getRequestor()));
+        System.out.println("========================================");
+
+        List<Loto> basePermits = lotoService.filterTable(Map.of("getRequestor", "Danil"));
+        basePermits.forEach(e-> System.out.println(e.getRequestor()));
 
 
     }
@@ -113,13 +126,13 @@ public class SpringOrmApplication implements CommandLineRunner {
         loto1.setRequestor("Andrew");
         lotoRepo.save(loto1);
         Loto loto2 = new Loto();
-        loto1.setRequestor("Danil");
+        loto2.setRequestor("Danil");
         lotoRepo.save(loto2);
         Loto loto3 = new Loto();
-        loto1.setRequestor("Cory");
+        loto3.setRequestor("Cory");
         lotoRepo.save(loto3);
         Loto loto4 = new Loto();
-        loto1.setRequestor("Ryan");
+        loto4.setRequestor("Ryan");
         lotoRepo.save(loto4);
 
     }

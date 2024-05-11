@@ -38,7 +38,7 @@ public class BasePermit extends BaseEntity {
         this.workScope = other.getWorkScope();
         this.equipment = other.getEquipment();
     }
-    public BasePermitDto toDto(){
-        return new BasePermitDto(this.workScope, this.system,this.equipment,this.requestor, this.controlAuthority, this.type, this.docNum, this.status, this.tickets,this.getCreatedBy());
-    }
+//    public BasePermitDto toDto(){
+//        return new BasePermitDto(this.workScope, this.system,this.equipment,this.requestor, this.controlAuthority, this.type, this.docNum, this.status, this.tickets,this.getCreatedBy());
+//    }
 }
