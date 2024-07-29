@@ -1,22 +1,11 @@
 package com.database.spring_orm;
 
-import com.database.spring_orm.entities.permits.BasePermit;
-import com.database.spring_orm.entities.permits.hot_works.Hw;
-import com.database.spring_orm.entities.permits.lotos.Box;
-import com.database.spring_orm.entities.permits.lotos.Lock;
-import com.database.spring_orm.entities.permits.lotos.Loto;
-import com.database.spring_orm.entities.permits.safe_works.Sw;
-import com.database.spring_orm.entities.permits.tickets.Ticket;
-import com.database.spring_orm.enums.PermitType;
-import com.database.spring_orm.repo.permits.hot_work_repo.HwRepo;
-import com.database.spring_orm.repo.permits.loto_repo.BoxRepo;
-import com.database.spring_orm.repo.permits.loto_repo.LockRepo;
-import com.database.spring_orm.repo.permits.loto_repo.LotoRepo;
-import com.database.spring_orm.repo.permits.safe_work_repo.SwRepo;
-import com.database.spring_orm.repo.permits.ticket_repo.TicketRepo;
-import com.database.spring_orm.service.permits.impl.TicketService;
-import com.database.spring_orm.service.permits.impl.LotoService;
-import com.database.spring_orm.util.Util;
+import com.database.spring_orm.entities.ChildEntity;
+import com.database.spring_orm.entities.OneParentedChild;
+import com.database.spring_orm.entities.ParentEntity;
+import com.database.spring_orm.repo.ChildRepo;
+import com.database.spring_orm.repo.OneParentedChildRepo;
+import com.database.spring_orm.repo.ParentRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -28,14 +17,10 @@ import java.util.*;
 @SpringBootApplication
 @AllArgsConstructor
 public class SpringOrmApplication implements CommandLineRunner {
-    private final HwRepo hwRepo;
-    private final SwRepo swRepo;
-    private final LotoRepo lotoRepo;
-    private final LockRepo lockRepo;
-    private final BoxRepo boxRepo;
-    private final TicketRepo ticketRepo;
-    private final TicketService ticketService;
-    private final LotoService lotoService;
+    private final ChildRepo childRepo;
+    private final ParentRepo parentRepo;
+    private final OneParentedChildRepo oneParentedChildRepo;
+
 
 
     public static void main(String[] args) {
@@ -46,94 +31,84 @@ public class SpringOrmApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        //buildLotoList();
+//        childRepo.save(new ChildEntity("Child1","Feature1"));
+//        childRepo.save(new ChildEntity("Child2","Feature2"));
+//        childRepo.save(new ChildEntity("Child3","Feature3"));
+//        childRepo.save(new ChildEntity("Child4","Feature4"));
+//        childRepo.save(new ChildEntity("Child5","Feature5"));
+//
+//        parentRepo.save(new ParentEntity("Parent1","Feature1"));
+//        parentRepo.save(new ParentEntity("Parent2","Feature2"));
+//        parentRepo.save(new ParentEntity("Parent3","Feature3"));
+//        parentRepo.save(new ParentEntity("Parent4","Feature4"));
+//        parentRepo.save(new ParentEntity("Parent5","Feature5"));
 
-        Ticket ticket = Util.toList(ticketRepo.findAll()).get(0);
-        System.out.println("ticket.getType() = " + ticket.getType());
-        List<BasePermit> permits = ticket.getPermits();
-        Loto loto = null;
-        for (BasePermit e : permits) {
-            System.out.println(e.getType());
-            if(e.getType().equals(PermitType.LOTO)) loto=(Loto)e;
-        }
-        if(loto!=null){
-            System.out.println(loto.getBox().getNumber());
-            System.out.println(loto.getLocks());
-        }
+//        oneParentedChildRepo.save(new OneParentedChild("Cild1","Feature5"));
+//        oneParentedChildRepo.save(new OneParentedChild("Cild2","Feature5"));
+//        oneParentedChildRepo.save(new OneParentedChild("Cild3","Feature5"));
+//        oneParentedChildRepo.save(new OneParentedChild("Cild4","Feature5"));
+//        oneParentedChildRepo.save(new OneParentedChild("Cild5","Feature5"));
 
-        List<Loto> list = lotoService.getAll();
-        System.out.println("========================================");
-        list.forEach(e-> System.out.println(e.getRequestor()));
+        List<ParentEntity> allParent = parentRepo.findAll();
+        List<ChildEntity> allChild = childRepo.findAll();
+        List<OneParentedChild> allOneParented = oneParentedChildRepo.findAll();
 
-        System.out.println(lotoService.getTestList().size());
+        System.out.println("allChild.size() = " + allChild.size());
+        System.out.println("allParent.size() = " + allParent.size());
+        System.out.println("allOneParented.size() = " + allOneParented.size());
 
-        List<Loto> requestor = lotoService.sortTable("getRequestor");
-        System.out.println("========================================");
-        requestor.forEach(e-> System.out.println(e.getRequestor()));
-        System.out.println("========================================");
+        ParentEntity parentEntity = allParent.get(0);
+        ChildEntity childEntity = allChild.get(0);
+        ParentEntity parentEntity2 = allParent.get(2);
+        OneParentedChild oneParentedChild = allOneParented.get(0);
 
-        List<Loto> basePermits = lotoService.filterTable(Map.of("getRequestor", "Danil"));
-        basePermits.forEach(e-> System.out.println(e.getRequestor()));
+        /**************************************************************************************
+         * Add and remove items through parent entity with CascadeType.ALL
+         *************************************************************************************/
+
+//        parentEntity.getChildItems().add(childEntity); //adds 1 item to list in both entities
+//        parentRepo.save(parentEntity);
+
+//        parentEntity.setChildItems(new ArrayList<>()); //removes all items from list in both entities
+//        parentRepo.save(parentEntity);
+
+//        parentEntity.setChildItems(childRepo.findAll()); //Adds all children into parent list, ands that parent into list in each child entity class
+//        parentRepo.save(parentEntity);
+
+//        parentEntity.getChildItems().removeIf(p->p.getId()==childEntity.getId()); //removes 1 item from parent class list and removes that parent from list in childEntity
+//        parentRepo.save(parentEntity);
+
+//        parentEntity2.getChildItems().add(childEntity);
+//        parentRepo.save(parentEntity2);
+
+//        allChild.get(3).setIsDeleted(true); //this soft deletes item that is then removed from all lists where it was included
+//        childRepo.save(allChild.get(3));
+
+//        System.out.println("parentEntity.getChildItems().size() = " + parentEntity.getChildItems().size());
+//        System.out.println("childEntity.getParentItems().size() = " + childEntity.getParentItems().size());
+//        System.out.println("allChild.get(2).getParentItems().size() = " + allChild.get(2).getParentItems().size());
 
 
-    }
+        /**************************************************************************************
+         * Add and remove items through child entity with CascadeType.ALL on parent side
+         *************************************************************************************/
+//        childEntity.getParentItems().add(parentEntity);
+//        childRepo.save(childEntity); //this will not change anything
 
-    private void buildAll(){
-        Hw hw1 = new Hw();
-        hw1.setRequestor("Danil");
-        Hw hw2 = new Hw();
-        hw2.setRequestor("Ivan");
-        hwRepo.save(hw1);
-        hwRepo.save(hw2);
+        /**************************************************************************************
+         * Add and remove items with OneToMany relationship
+         *************************************************************************************/
+//        parentEntity.getOneParentedChildList().add(oneParentedChild); // this doesn't work
+//        parentRepo.save(parentEntity);
 
-        Sw sw1 = new Sw();
-        sw1.setControlAuthority("Hello");
-        Sw sw2 = new Sw();
-        sw2.setControlAuthority("Be Safe");
-        swRepo.save(sw1);
-        swRepo.save(sw2);
+//        oneParentedChild.setParent(parentEntity);
+//        oneParentedChildRepo.save(oneParentedChild);
 
-        Box box1 = new Box();
-        box1.setNumber(55);
-        boxRepo.save(box1);
+        System.out.println("oneParentedChild.getParent().getName() = " + oneParentedChild.getParent().getName());
+        System.out.println("parentEntity.getOneParentedChildList().size() = " + parentEntity.getOneParentedChildList().size());
+        System.out.println("parentEntity2.getOneParentedChildList().get(0).getName() = " + parentEntity2.getOneParentedChildList().size());
 
-        Lock lock1 = new Lock();
-        lock1.setNumber(31);
-        Lock lock2 = new Lock();
-        lock2.setNumber(32);
-        Lock lock3 = new Lock();
-        lock3.setNumber(33);
-        lockRepo.save(lock2);
-        lockRepo.save(lock1);
-        lockRepo.save(lock3);
-
-        Loto loto1 = new Loto();
-        loto1.setBox(box1);
-        box1.setLoto(loto1);
-        loto1.setLocks(new ArrayList<>(Arrays.asList(lock1,lock2,lock3)));
-        lock1.setLoto(loto1);
-        lock2.setLoto(loto1);
-        lock3.setLoto(loto1);
-        loto1.setEquipment("pump");
-        lotoRepo.save(loto1);
-
-        Ticket ticket1 = new Ticket();
-        ticket1.setPermits(new ArrayList<>(Arrays.asList(hw1,hw2,sw1,sw2,loto1)));
-        ticketRepo.save(ticket1);
-    }
-    private void buildLotoList(){
-        Loto loto1 = new Loto();
-        loto1.setRequestor("Andrew");
-        lotoRepo.save(loto1);
-        Loto loto2 = new Loto();
-        loto2.setRequestor("Danil");
-        lotoRepo.save(loto2);
-        Loto loto3 = new Loto();
-        loto3.setRequestor("Cory");
-        lotoRepo.save(loto3);
-        Loto loto4 = new Loto();
-        loto4.setRequestor("Ryan");
-        lotoRepo.save(loto4);
 
     }
+
 }

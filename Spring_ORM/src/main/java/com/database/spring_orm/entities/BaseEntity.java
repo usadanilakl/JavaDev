@@ -1,6 +1,7 @@
 package com.database.spring_orm.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
@@ -12,24 +13,17 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 @Data
+@NoArgsConstructor
 public class BaseEntity {
-//    @CreatedDate
-//    @Temporal(TemporalType.TIMESTAMP)
-//    private LocalDateTime dateCreated;
-//    @LastModifiedDate
-//    @Temporal(TemporalType.TIMESTAMP)
-//    private LocalDateTime dateModified;
-//    @CreatedBy
-//    private String createdBy;
-//    @LastModifiedBy
-//    private String modifiedBy;
-
-    private String createdBy;
     @Id
     @GeneratedValue
     private Long id;
+    private String name;
+    private String feature;
+    private Boolean isDeleted = false;
 
-//    public BaseEntity(String createdBy) {
-//        this.createdBy = createdBy;
-//    }
+    public BaseEntity(String name, String feature) {
+        this.name = name;
+        this.feature = feature;
+    }
 }
