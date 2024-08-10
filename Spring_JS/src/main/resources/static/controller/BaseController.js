@@ -7,6 +7,11 @@ class BaseController{
     async request(){
         const request = await fetch(this.url,this.metadata);
         const data = await request.json();
+        return data;
+    }
+    async getRequest(){
+        const request = await fetch(this.url);
+        const data = await request.json();
     }
 }
 

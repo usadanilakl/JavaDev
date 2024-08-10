@@ -6,18 +6,19 @@
 </head>
 <body>
 
-    <script type="module" src="/controller/BaseController.js"></script>
+    <!-- <script type="module" src="/controller/BaseController.js"></script>
     <script type="module" src="/controller/EndPoints.js"></script>
-    <script type="module" src="/controller/Metadata.js"></script>
-    <script type="module" src="/dom/BaseDomBuilder.js"></script>
+    <script type="module" src="/controller/Metadata.js"></script> -->
+    <!-- <script type="module" src="/dom/BaseDomBuilder.js"></script> -->
     <script type="module">
-        import BaseDomBuilder from '/dom/BaseDomBuilder.js'
-        document.addEventListener('DOMContentLoaded',(event)=>{
+        import LotoService from '/service/LotoService.js'
 
-            let list = BaseDomBuilder.getLotoList();
-            console.log(list);     
-            
-            BaseDomBuilder.print();
+        document.addEventListener('DOMContentLoaded',async (event)=>{
+
+           let list = await new LotoService().getLotosList();
+           console.log(list)
+           document.appendChild(list);
+
         })
 
     </script>

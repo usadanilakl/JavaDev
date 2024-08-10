@@ -3,3 +3,4 @@ class Metadata{
         method:"GET"
     }
 }
+export default Metadata;
